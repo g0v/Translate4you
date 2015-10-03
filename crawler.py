@@ -65,17 +65,15 @@ u"馬來文":"may",
 }
 
 def translate_word(word, fr, to):
-  #data_cht = json.dumps(json_obj_cht) 
   data_in = '{"text":"%s","from":"%s","to":"%s"}'%(urllib.quote(word,safe=''),fr,to) 
   r = requests.post("http://www.freetranslation.com/gw-mt-proxy-service-web/mt-translation", data=data_in, headers=HEADERS )
-  #print r.text
   out_obj = json.loads( r.text)
-  #print out_obj
   out_word = out_obj["translation"]
   return out_word
 
 def gen_words(word_in):
   result = {}
+  result.update({u"中文 (繁體)": word_in})
   word_eng =  translate_word(word_in,"cht","eng")
   result.update({u"英文": word_eng})
   print "%s: %s"%(u"英文",word_eng)
@@ -87,14 +85,10 @@ def gen_words(word_in):
 
 def main():
   result = gen_words(sys.argv[1])
-  #for w in result:
-  #  print "%s: %s"%(w,result[w])
 
 def test():
   word_in = u"投票".encode('utf-8')
   result = gen_words(word_in)
-  #for w in result:
-  #  print "%s: %s"%(w,result[w])
 
 if __name__ == "__main__":
   #main()
